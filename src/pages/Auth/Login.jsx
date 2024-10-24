@@ -1,31 +1,37 @@
 import React, { useState } from 'react'
 import Layout from '../../components/Layout/Layout'
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate ,useLocation } from 'react-router-dom';
 import { Service_url } from '../../config/app.config';
 import toast from 'react-hot-toast';
+import { useAuth } from '../../Context/auth';
 // import "../../styles/AuthStyles.css";
 
 
 const Register = () => {
 
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+  const [auth ,setAuth] = useAuth();
 
   const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log(name,email,password,phone,address)
+    console.log(email,password)
     // console.log(process.env.API)
     // toast("Wow so easy!");
     try {
-      const res = await axios.post(`${Service_url}/api/register`,{name ,password,email,phone,address});
+      const res = await axios.post(`${Service_url}/api/login`,{password,email});
       if (res && res.data.success) {
         toast.success(res.data && res.data.message)
-        navigate("/login")
+        setAuth({
+            ...auth,
+            user:res.data.user,
+            token:res.data.token
+        })
+        localStorage.setItem("auth",JSON.stringify(res.data))
+        navigate("/")
       }else{
         toast.error(res.data.message)
       }
@@ -37,14 +43,10 @@ const Register = () => {
   }
 
   return (
-    <Layout title={"register - Ecommerce App"}>
+    <Layout title={"Login - Ecommerce App"}>
       <div className="register ">
         <form onSubmit={handleSubmit}>
-          <h4 className='mt-2 mb-5'>Register Form</h4>
-          <div className="mb-3">
-            <label htmlFor="exampleInputName" className="form-label">Name</label>
-            <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="form-control" id="exampleInputName" />
-          </div>
+          <h4 className='mt-2 mb-5'>Login Form</h4>
           <div className="mb-3">
             <label htmlFor="exampleInputEmail1" className="form-label">Email</label>
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
@@ -53,15 +55,7 @@ const Register = () => {
             <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
             <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="form-control" id="exampleInputPassword1" />
           </div>
-          <div className="mb-3">
-            <label htmlFor="exampleInputPhone" className="form-label">Phone</label>
-            <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} className="form-control" id="exampleInputPhone" aria-describedby="phoneHelp" />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="exampleInputAddress" className="form-label">address</label>
-            <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} className="form-control" id="exampleInputAddress" aria-describedby="addressHelp" />
-          </div>
-          <button type="submit" className="btn btn-dark w-full" style={{width: "100%"}}>Submit</button>
+          <button type="submit" className="btn btn-dark w-full" style={{width: "100%"}}>Login</button>
         </form>
       </div>
     </Layout>

@@ -107,7 +107,7 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  /* height: 70vh; */
+  height: 70vh;
 }
 .register form{
   padding: 40px;
