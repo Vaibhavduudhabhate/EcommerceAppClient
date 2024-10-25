@@ -11,13 +11,13 @@ const Spinner = () => {
             setCount((prevValue) => --prevValue);
         }, 1000);
         count === 0 && navigate('/login',
-            { state: location.pathname }
+            { state: { from: location.pathname }}
         )
         return () => clearInterval(interval)
-    }, [count, navigate])
+    }, [count, navigate ,location])
     return (
         <div class="d-flex flex-column justify-content-center align-items-center" style={{ height: "90vh" }}>
-            <h1>rediracting to you in {count} second</h1>
+            <h1>redirecting to you in {count} second</h1>
             <div class="spinner-border" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>

@@ -14,6 +14,8 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  const [answer, setAnswer] = useState("");
+
   const navigate = useNavigate();
 
   const handleSubmit = async(e) => {
@@ -22,7 +24,7 @@ const Register = () => {
     // console.log(process.env.API)
     // toast("Wow so easy!");
     try {
-      const res = await axios.post(`${Service_url}/api/register`,{name ,password,email,phone,address});
+      const res = await axios.post(`${Service_url}/api/register`,{name ,password,email,phone,address,answer});
       if (res && res.data.success) {
         toast.success(res.data && res.data.message)
         navigate("/login")
@@ -40,7 +42,7 @@ const Register = () => {
     <Layout title={"register - Ecommerce App"}>
       <div className="register ">
         <form onSubmit={handleSubmit}>
-          <h4 className='mt-2 mb-5'>Register Form</h4>
+          <h4 className='mt-2'>Register Form</h4>
           <div className="mb-3">
             <label htmlFor="exampleInputName" className="form-label">Name</label>
             <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="form-control" id="exampleInputName" />
@@ -60,6 +62,10 @@ const Register = () => {
           <div className="mb-3">
             <label htmlFor="exampleInputAddress" className="form-label">address</label>
             <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} className="form-control" id="exampleInputAddress" aria-describedby="addressHelp" />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="exampleInputAnswer" className="form-label">what is your favourite sports ?</label>
+            <input type="text" value={answer} onChange={(e) => setAnswer(e.target.value)} className="form-control" id="exampleInputAnswer" aria-describedby="answerHelp" />
           </div>
           <button type="submit" className="btn btn-dark w-full" style={{width: "100%"}}>Submit</button>
         </form>

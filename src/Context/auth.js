@@ -27,7 +27,6 @@ const AuthProvider = ({children}) =>{
             {children}
         </AuthContext.Provider>
     )
-
 }
 
 const useAuth = () =>useContext(AuthContext);

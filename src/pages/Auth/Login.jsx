@@ -31,7 +31,8 @@ const Register = () => {
             token:res.data.token
         })
         localStorage.setItem("auth",JSON.stringify(res.data))
-        navigate("/")
+        console.log(location.state?.from)
+        navigate(location.state?.from || "/")
       }else{
         toast.error(res.data.message)
       }
@@ -55,6 +56,9 @@ const Register = () => {
             <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
             <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="form-control" id="exampleInputPassword1" />
           </div>
+          <button type="button" className="btn text-end float-end mb-3" style={{width: "60%"}} onClick={()=>{
+            navigate('/forgot-password')
+          }}>forgot password</button>
           <button type="submit" className="btn btn-dark w-full" style={{width: "100%"}}>Login</button>
         </form>
       </div>
