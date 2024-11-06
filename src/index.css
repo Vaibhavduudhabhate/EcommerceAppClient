@@ -115,3 +115,9 @@
   border-radius: 20% 20%;
   box-shadow: 25px 19px 6px -6px gray;
 }
+
+
+.product_link{
+  text-decoration: none;
+  color: white !important;
+}
