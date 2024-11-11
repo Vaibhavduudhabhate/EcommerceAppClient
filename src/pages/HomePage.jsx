@@ -5,6 +5,7 @@ import { Service_url } from '../config/app.config';
 import { Checkbox, Radio } from 'antd';
 import toast from 'react-hot-toast';
 import { Prices } from '../components/Prices';
+import { useNavigate } from 'react-router-dom';
 const HomePage = () => {
     const [products, setProducts] = useState([])
     const [categories, setCategories] = useState([])
@@ -13,38 +14,39 @@ const HomePage = () => {
     const [total ,setTotal] = useState(0)
     const [page,setPage] = useState(1)
     const [loading , setLoading] = useState();
+    const navigate = useNavigate();
 
-    const getTotal = async ()=>{
-        try {
-            const data = await axios.get(`${Service_url}/api/product/product-count`)
-            console.log(data)
-            setTotal(data?.data.total)
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    // const getTotal = async ()=>{
+    //     try {
+    //         const data = await axios.get(`${Service_url}/api/product/product-count`)
+    //         console.log(data)
+    //         setTotal(data?.data.total)
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
 
-    useEffect(()=>{
-        if(page === 1) return
-        loadMore()
-    },[page ])
-    const loadMore = async()=>{
-        try {
-            setLoading(true)
-            const data = await axios.get(`${Service_url}/api/product/product-list/${page}`)
-            console.log(data)
-            setLoading(false)
-            // setTotal(data?.data.total)
-            if (Array.isArray(data?.data.products)) {
-                setProducts(prevProducts => [...prevProducts, ...data?.data.products]);
-            } else {
-                console.log("No products found or invalid data:", data?.products);
-            }
-        } catch (error) {
-            console.log(error)
-            setLoading(false);
-        }
-    }
+    // useEffect(()=>{
+    //     if(page === 1) return
+    //     loadMore()
+    // },[page ])
+    // const loadMore = async()=>{
+    //     try {
+    //         setLoading(true)
+    //         const data = await axios.get(`${Service_url}/api/product/product-list/${page}`)
+    //         console.log(data)
+    //         setLoading(false)
+    //         // setTotal(data?.data.total)
+    //         if (Array.isArray(data?.data.products)) {
+    //             setProducts(prevProducts => [...prevProducts, ...data?.data.products]);
+    //         } else {
+    //             console.log("No products found or invalid data:", data?.products);
+    //         }
+    //     } catch (error) {
+    //         console.log(error)
+    //         setLoading(false);
+    //     }
+    // }
 
     const getAllCategory = async () => {
         try {
@@ -60,13 +62,13 @@ const HomePage = () => {
 
     useEffect(() => {
         getAllCategory()
-        getTotal()
+        // getTotal()
     }, [])
 
     const getAllProducts = async () => {
         try {
             setLoading(true)
-            const data = await axios.get(`${Service_url}/api/product/product-list/${page}`)
+            const data = await axios.get(`${Service_url}/api/product/get-product`)
             setLoading(false)
 
             setProducts(data.data.products)
@@ -169,7 +171,7 @@ const HomePage = () => {
                                                 ? pro.description.substring(0, 30) + '...'
                                                 : pro.description}
                                             <p className="card-text">{pro.price}</p>
-                                            <button className='btn btn-primary'>More Details</button>
+                                            <button className='btn btn-primary' onClick={()=>navigate(`/product/${pro.slug}`)}>More Details</button>
                                             <button className='btn btn-secondary ms-1'>ADD TO CART</button>
                                         </div>
                                     </div>

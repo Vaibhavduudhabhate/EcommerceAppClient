@@ -1,11 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { GiShoppingBag } from "react-icons/gi";
 import { useAuth } from '../../Context/auth';
 import toast from 'react-hot-toast';
+import SearchInput from '../Form/SearchInput';
+import useCategory from '../../Hooks/useCategory';
+
 
 const Header = () => {
   const [auth, setAuth] = useAuth();
+  const categories = useCategory();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(prevState => !prevState);
+  };
 
   const handleLogout = () => {
     setAuth({
@@ -24,11 +33,35 @@ const Header = () => {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+              <SearchInput />
               <li className="nav-item">
                 <NavLink to="/" className="nav-link">Home</NavLink>
               </li>
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <NavLink to="/category" className="nav-link">Category</NavLink>
+              </li> */}
+             <li className="nav-item dropdown">
+                <Link
+                  className="nav-link dropdown-toggle"
+                  to={"/categories"}
+                  data-bs-toggle="dropdown"
+                >
+                  CATEGORY
+                </Link>
+                <ul className="dropdown-menu">
+                <li className="nav-item">
+                      <Link className="dropdown-item" to={`/categories`}>
+                      All Categories
+                      </Link>
+                    </li>
+                  {categories && categories.map((ca, index) => (
+                    <li className="nav-item" key={index}>
+                      <Link className="dropdown-item" to={`/category/${ca.slug}`}>
+                        {ca.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </li>
               {
                 !auth.user ? (
