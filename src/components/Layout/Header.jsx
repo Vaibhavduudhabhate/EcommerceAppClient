@@ -5,10 +5,11 @@ import { useAuth } from '../../Context/auth';
 import toast from 'react-hot-toast';
 import SearchInput from '../Form/SearchInput';
 import useCategory from '../../Hooks/useCategory';
-
+import { useCart } from '../../Context/cart';
 
 const Header = () => {
   const [auth, setAuth] = useAuth();
+  const [cart] = useCart()
   const categories = useCategory();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -105,7 +106,7 @@ const Header = () => {
                 </ul>
               </li>
               <li className="nav-item">
-                <NavLink to="/cart" className="nav-link">Cart(0)</NavLink>
+                <NavLink to="/cart" className="nav-link">Cart ({cart?.length})</NavLink>
               </li>
             </ul>
           </div>

@@ -24,7 +24,7 @@ const Search = () => {
                                             {pro.description && pro.description.length > 30
                                                 ? pro.description.substring(0, 30) + '...'
                                                 : pro.description}
-                                            <p className="card-text">{pro.price}</p>
+                                            <p className="card-text">{pro.price} ₹</p>
                                             <button className='btn btn-primary'>More Details</button>
                                             <button className='btn btn-secondary ms-1'>ADD TO CART</button>
                                         </div>

@@ -6,14 +6,16 @@ import { Checkbox, Radio } from 'antd';
 import toast from 'react-hot-toast';
 import { Prices } from '../components/Prices';
 import { useNavigate } from 'react-router-dom';
+import { useCart } from '../Context/cart';
 const HomePage = () => {
     const [products, setProducts] = useState([])
     const [categories, setCategories] = useState([])
     const [checked, setChecked] = useState([])
     const [radio, setRadio] = useState("")
-    const [total ,setTotal] = useState(0)
-    const [page,setPage] = useState(1)
-    const [loading , setLoading] = useState();
+    const [total, setTotal] = useState(0)
+    const [page, setPage] = useState(1)
+    const [cart, setCart] = useCart()
+    const [loading, setLoading] = useState();
     const navigate = useNavigate();
 
     // const getTotal = async ()=>{
@@ -81,7 +83,7 @@ const HomePage = () => {
     const handleFilter = async (value, id) => {
         let all = [...checked];
         if (value) {
-            all.push(id); 
+            all.push(id);
         } else {
             all = all.filter((cat) => cat !== id); // Fix the filtering logic
         }
@@ -170,9 +172,15 @@ const HomePage = () => {
                                             {pro.description && pro.description.length > 30
                                                 ? pro.description.substring(0, 30) + '...'
                                                 : pro.description}
-                                            <p className="card-text">{pro.price}</p>
-                                            <button className='btn btn-primary' onClick={()=>navigate(`/product/${pro.slug}`)}>More Details</button>
-                                            <button className='btn btn-secondary ms-1'>ADD TO CART</button>
+                                            <p className="card-text">{pro.price} ₹</p>
+                                            <button className='btn btn-primary' onClick={() => navigate(`/product/${pro.slug}`)}>More Details</button>
+                                            <button className='btn btn-secondary ms-1'
+                                                onClick={() => {
+                                                    setCart([...cart, pro])
+                                                    localStorage.setItem("cart",JSON.stringify([...cart,pro]))
+                                                    toast.success("product added to cart")
+                                                }}
+                                            >ADD TO CART</button>
                                         </div>
                                     </div>
                                     // </Link>
@@ -188,17 +196,17 @@ const HomePage = () => {
                         <div className='total m-4 p-3 text-center'>
                             {/* {total} */}
                             {products.length ? (products && products.length < total && (
-                                <button className='btn btn-warning' onClick={(e)=>{
+                                <button className='btn btn-warning' onClick={(e) => {
                                     e.preventDefault()
                                     setPage(page + 1)
                                 }}>
-                                    {loading ? "loading ...": "Loadmore"}
+                                    {loading ? "loading ..." : "Loadmore"}
                                 </button>
                             )
-                        ):(<>
-                            
-                        </>
-                        )
+                            ) : (<>
+
+                            </>
+                            )
                             }
                         </div>
                     </div>
