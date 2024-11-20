@@ -10,12 +10,28 @@ const CartPage = () => {
     const [auth ,setAuth] = useAuth();
     const navigate = useNavigate()
 
+    const totalPrice = () =>{
+        try {
+            let total = 0;
+            cart?.map((item)=>{
+                total = total + item.price
+            })
+            return total.toLocaleString("en-US",{
+                currency:"INR",
+                style:"currency"
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const removeCartItem = (pid) =>{
         try {
             let myCart = [...cart];
             let index = myCart.findIndex(item => item._id === pid) 
             myCart.splice(index,1)
             setCart(myCart)
+            localStorage.setItem('cart',JSON.stringify(myCart))
         } catch (error) {
             console.log(error)
         }
@@ -38,7 +54,7 @@ const CartPage = () => {
                 <div className="col-md-8">
                     {
                         cart?.map(pro =>(
-                            <div className="row mb-2 card flex-row">
+                            <div className="row mb-2 p-3 card flex-row">
                                 <div className="col-md-3" width="100px !important">
                                     <img src={`${Service_url}/api/product/product-photo/${pro._id}`} className="card-img-top checkout-detail-page" width={"100px"} alt={pro.name} />  
                                 </div>
@@ -54,10 +70,15 @@ const CartPage = () => {
                         ))
                     }
 
-                    {/* Cart Item        */}
+                    {/* Cart Item */}
                 </div>
-                <div className="col-md-3">
-                    Checkout | payment
+                <div className="col-md-3 text-center">
+                    <h2>Cart Summary</h2>
+                    <p>
+                    Total | Checkout | payment
+                    </p>
+                    <hr />
+                    <h4>Total : {totalPrice()}</h4>
                 </div>
             </div>
         </div>
