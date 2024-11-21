@@ -26,17 +26,19 @@ const Profiles = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(name, email, password, phone, address)
-        // console.log(process.env.API)
-        // toast("Wow so easy!");
+
         try {
-            const res = await axios.post(`${Service_url}/api/register`, { name, password, email, phone, address });
-            //   if (res && res.data.success) {
-            //     toast.success(res.data && res.data.message)
-            //     // navigate("/login")
-            //   }else{
-            //     toast.error(res.data.message)
-            //   }
-            //   console.log(res)
+            const {data} = await axios.put(`${Service_url}/api/profile`, { name, password, email, phone, address });
+              if (data?.error) {
+                  toast.error(data.message)
+                }else{
+                    setAuth({...auth,user:data?.updatedUser})
+                    let ls = localStorage.getItem("auth")
+                    ls = JSON.parse(ls)
+                    ls.user = data.updatedUser
+                    localStorage.setItem("auth",JSON.stringify(ls))
+                    toast.success("Profile updated successfully")
+                }
         } catch (error) {
             console.log(error)
             toast.error("Something went wrong")
