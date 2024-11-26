@@ -12,8 +12,6 @@ const Search = () => {
     const navigate = useNavigate()
 
     
-
-    console.log(values)
   return (
     <Layout title={'Search results'}>
         <div className="container">
