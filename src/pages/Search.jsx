@@ -11,6 +11,10 @@ const Search = () => {
     const [cart, setCart] = useCart()
     const navigate = useNavigate()
 
+
+
+
+
     
   return (
     <Layout title={'Search results'}>
