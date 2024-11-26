@@ -8,7 +8,7 @@ const Footer = () => {
     //     All Rights Reserved &copy;
     //   </h4 >
     // </div>
-    <div className='footer fixed-bottom'>
+    <div className='footer'>
       <h4 className='text-center'>
         All Rights &copy; Reserved
       </h4>
