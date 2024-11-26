@@ -6,6 +6,8 @@ const Spinner = ({ path = "login" }) => {
     const navigate = useNavigate();
     const location = useLocation();
 
+    console.log("hiiiiii")
+
     useEffect(() => {
         const interval = setInterval(() => {
             setCount((prevValue) => --prevValue);
